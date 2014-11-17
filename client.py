@@ -28,7 +28,7 @@ my_socket.connect((SERVER, PORT))
 
 print "Enviando: " + METHOD + " sip:" + LINE + " SIP/2.0\r\n\r\n"
 my_socket.send(METHOD + " sip:" + LINE + " SIP/2.0\r\n\r\n")
-#En caso de que nuestro servidor no haya sido lanzado 
+#En caso de que nuestro servidor no haya sido lanzado
 try:
     data = my_socket.recv(1024)
 except socket.error:
