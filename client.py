@@ -26,17 +26,23 @@ my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect((SERVER, PORT))
 
-
-print "Enviando: " + LINE
-my_socket.send(LINE)
-
 try:
+    print "Enviando: " + LINE
+    my_socket.send(LINE)
+
     data = my_socket.recv(1024)
+
+    print 'Recibido -- ', data
+
+    ACK = "ACK" + " sip:" +  LOGIN + "@" + SERVER + " SIP/2.0\r\n\r\n"
+    print "Enviando ACK: " + ACK
+    my_socket.send(LINE)
+    data = my_socket.recv(1024)
+    print 'Recibido -- ', data
+
+    print "Terminando socket..."
 except socket.error:
     print "Error: No server listening at " + SERVER + " port " + str(PORT)
-
-print 'Recibido -- ', data
-print "Terminando socket..."
 
 
 my_socket.close()
