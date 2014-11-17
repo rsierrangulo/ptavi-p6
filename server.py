@@ -8,6 +8,7 @@ import SocketServer
 import sys
 import os
 
+
 class EchoHandler(SocketServer.DatagramRequestHandler):
     """
     Echo server class
@@ -29,16 +30,16 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 respuesta += "SIP/2.0 200 OK\r\n\r\n"
                 self.wfile.write(respuesta)
             elif Method == 'ACK':
-                 aEjecutar = 'mp32rtp -i 127.0.0.1 -p 23032 < ' + sys.argv[3]
-                 print "Vamos a ejecutar", aEjecutar
-                 os.system(aEjecutar)
-                 print(" Ha terminado la ejecución de fich de audio")
+                aEjecutar = 'mp32rtp -i 127.0.0.1 -p 23032 < ' + sys.argv[3]
+                print "Vamos a ejecutar", aEjecutar
+                os.system(aEjecutar)
+                print(" Ha terminado la ejecución de fich de audio")
             elif Method == 'BYE':
                 respuesta = "SIP/2.0 200 OK\r\n\r\n"
                 self.wfile.write(respuesta)
             else:
                 self.wfile.write("SIP/2.0 400 Bad Request\r\n\r\n")
-            
+
 if __name__ == "__main__":
     LISTEN_PORT = int(sys.argv[2])
     # Creamos servidor de eco y escuchamos
