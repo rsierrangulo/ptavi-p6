@@ -5,6 +5,14 @@ Clase (y programa principal) para un servidor de eco en UDP simple
 """
 
 import SocketServer
+import sys
+
+comandos = sys.argv
+
+
+SERVER = comandos[1]
+PORT = int(comandos[2])
+FICH_AUDIO = comandos[3]
 
 
 class EchoHandler(SocketServer.DatagramRequestHandler):
@@ -13,12 +21,31 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
     """
 
     def handle(self):
-        # Escribe dirección y puerto del cliente (de tupla client_address)
-        self.wfile.write("Hemos recibido tu peticion")
         while 1:
-            # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
             print "El cliente nos manda " + line
+            lista = line.split()
+            metodo = lista[0]
+            metodos = ['INVITE', 'ACK', 'BYE']
+            if metodo == INVITE
+                respuesta = "SIP/2.0 100 Trying\r\n\r\n"
+                respuesta += "SIP/2.0 180 Ring\r\n\r\n"
+                respuesta += "SIP/2.0 200 OK\r\n\r\n"
+                self.wfile.write(respuesta)
+            elif metodo == ACK
+                print "recibido ACK"
+            elif metodo == BYE
+                self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
+            elif not metodo in metodos:
+                self.wfile.write("SIP/2.0 405 Method Not Allowed\r\n\r\n")
+            else:
+                self.wfile.write("SIP/2.0 400 Bad Request\r\n\r\n")
+                
+                
+                
+                
+                
+
 
             # Si no hay más líneas salimos del bucle infinito
             if not line:
@@ -26,6 +53,8 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
-    serv = SocketServer.UDPServer(("", 6001), EchoHandler)
-    print "Lanzando servidor UDP de eco..."
+    if len(comandos) != 4:
+        print "Usage: python server.py IP port audio_file"
+    serv = SocketServer.UDPServer((SERVER, PORT), EchoHandler)
+    print "Listening..."
     serv.serve_forever()
