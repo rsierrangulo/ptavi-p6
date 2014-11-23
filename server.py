@@ -6,6 +6,7 @@ Clase (y programa principal) para un servidor de eco en UDP simple
 
 import SocketServer
 import sys
+import os 
 
 class EchoHandler(SocketServer.DatagramRequestHandler):
     """
@@ -17,18 +18,30 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
         
         while 1:
             # Leyendo línea a línea lo que nos envía el cliente
+            #SIP/2.0 200 OK\r\n\r\n
             line = self.rfile.read()
             line = line.split()
             if not line:
                 break
+            # Si no hay más líneas salimos del bucle infinito
             if line[0] == "INVITE":
                 print "INVITE recibido"
-                self.wfile.write("SIP/2.0 100 Trying \r\n SIP/2.0 180 Ring \r\n SIP/2.0 200 OK")
-            elif line[0] == "ACK"
+                self.wfile.write("SIP/2.0 100 Trying\r\n\r\nSIP/2.0 180 Ring\r\n\r\nSIP/2.0 200 OK\r\n\r\n")
+                
+            elif line[0] == "ACK":
                 print "ACK recibido" 
-            elif line[0] == "BYE" 
-                self.wfile.write("SIP/2.0 200 OK")
-            # Si no hay más líneas salimos del bucle infinito
+                # aEjecutar es un string con lo que se ha de ejecutar en la shell 
+                aEjecutar = 'mp32rtp -i 127.0.0.1 -p 23032 <' + fichero_audio 
+                print "Vamos a ejecutar", aEjecutar 
+                os.system(aEjecutar) 
+
+            elif line[0] == "BYE":
+                self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
+            elif line[0] == "CANCEL" or line[0] == "REGISTER" or line[0] == "OPTIONS":
+                self.wfile.write("SIP/2.0 Method Not Allowed\r\n\r\n") 
+            else:
+                self.wfile.write("SIP/2.0 400 Bad Request") 
+            
             
 
 if __name__ == "__main__":
@@ -37,7 +50,7 @@ if __name__ == "__main__":
     else:
         print "Listening..."
     # Creamos servidor de eco y escuchamos
-
+    fichero_audio = sys.argv[3] 
     PORT = int(sys.argv[2])
     serv = SocketServer.UDPServer(("", PORT), EchoHandler)
     print "Lanzando servidor UDP de eco..."
