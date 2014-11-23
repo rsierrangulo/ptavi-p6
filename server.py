@@ -36,11 +36,14 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 os.system(aEjecutar) 
 
             elif line[0] == "BYE":
+                print "BYE recibido"
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
             elif line[0] == "CANCEL" or line[0] == "REGISTER" or line[0] == "OPTIONS":
+                print "metodo no disponible recibido"
                 self.wfile.write("SIP/2.0 Method Not Allowed\r\n\r\n") 
             else:
-                self.wfile.write("SIP/2.0 400 Bad Request") 
+                print "petición incorrecta recibida"
+                self.wfile.write("SIP/2.0 400 Bad Request\r\n\r\n") 
             
             
 
