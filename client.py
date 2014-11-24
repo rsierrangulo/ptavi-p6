@@ -20,7 +20,7 @@ SERVER = LISTA_2[0]
 PORT = int(LISTA_2[1])
 
 
-LINE = METODO + " sip:" +  LOGIN + "@" + SERVER + " SIP/2.0\r\n\r\n"
+LINE = METODO + " sip:" + LOGIN + "@" + SERVER + " SIP/2.0\r\n\r\n"
 
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -39,7 +39,7 @@ try:
     respuesta += "SIP/2.0 200 OK\r\n\r\n"
 
     if data == respuesta:
-        ACK = "ACK" + " sip:" +  LOGIN + "@" + SERVER + " SIP/2.0\r\n\r\n"
+        ACK = "ACK" + " sip:" + LOGIN + "@" + SERVER + " SIP/2.0\r\n\r\n"
         print "Enviando ACK: " + ACK
         my_socket.send(ACK)
         data = my_socket.recv(1024)
