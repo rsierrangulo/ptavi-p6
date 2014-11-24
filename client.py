@@ -27,14 +27,15 @@ my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect((SERVERIP, SIPPORT))
 
-line = " sip:" + LOGIN + "@" + "SIP/2.0\r\n\r\n"
+line = " sip:" + LOGIN + "@" + SERVERIP + " SIP/2.0\r\n\r\n"
 envio = metodo + line
 print "Enviando: " + envio
 my_socket.send(envio)
 try:
     data = my_socket.recv(1024)
     print 'Recibido -- ', data
-    if data == "SIP/2.0 100 Trying\r\n\r\nSIP/2.0 180 Ring\r\n\r\nSIP/2.0 200 OK\r\n\r\n":
+    if data == ("SIP/2.0 100 Trying\r\n\r\nSIP/2.0 180 Ring"
+                "\r\n\r\nSIP/2.0 200 OK\r\n\r\n"):
         metodo = "ACK"
         envio = metodo + line
         print "Enviando: " + envio
