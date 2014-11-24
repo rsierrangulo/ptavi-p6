@@ -37,6 +37,7 @@ try:
     respuesta = "SIP/2.0 100 Trying\r\n\r\n"
     respuesta += "SIP/2.0 180 Ring\r\n\r\n"
     respuesta += "SIP/2.0 200 OK\r\n\r\n"
+
     if data == respuesta:
         ACK = "ACK" + " sip:" +  LOGIN + "@" + SERVER + " SIP/2.0\r\n\r\n"
         print "Enviando ACK: " + ACK
