@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
-"""
-Clase (y programa principal) para un servidor de eco en UDP simple
-"""
+
 
 import SocketServer
 import sys
@@ -17,8 +15,14 @@ FICH_AUDIO = comandos[3]
 
 
 class EchoHandler(SocketServer.DatagramRequestHandler):
+    """
+    Clase para un servidor SIP
+    """
 
     def handle(self):
+        """
+        Método handle
+        """
         while 1:
             line = self.rfile.read()
             print "El cliente nos manda " + line
@@ -46,6 +50,9 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 self.wfile.write("SIP/2.0 400 Bad Request\r\n\r\n")
 
 if __name__ == "__main__":
+    """
+    Procedimiento principal
+    """
     if len(comandos) != 4:
         print "Usage: python server.py IP port audio_file"
     serv = SocketServer.UDPServer((SERVER, PORT), EchoHandler)
