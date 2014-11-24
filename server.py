@@ -39,7 +39,7 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 self.wfile.write(respuesta)
             elif metodo == "ACK":
                 aEjecutar = './mp32rtp -i 127.0.0.1 -p 23032 <' + FICH_AUDIO
-                os.system('chmod 755 mp32rtp')                
+                os.system('chmod 755 mp32rtp')
                 os.system(aEjecutar)
             elif metodo == "BYE":
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
