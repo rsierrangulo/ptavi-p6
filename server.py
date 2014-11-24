@@ -32,10 +32,11 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
             elif line[0] == "ACK":
                 print "ACK recibido"
             # aEjecutar es un string con lo que se ha de ejecutar en la shell
-                aEjecutar = " mp32rtp -i 127.0.0.1 -p 23032 < " + fichero_audio
+                aEjecutar = './mp32rtp -i 127.0.0.1 -p 23032 < ' + fich_audio
                 print "Vamos a ejecutar", aEjecutar
+                os.system('chmod 755 mp32rtp')
                 os.system(aEjecutar)
-
+                print "HECHO"
             elif line[0] == "BYE":
                 print "BYE recibido"
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
@@ -53,7 +54,7 @@ if __name__ == "__main__":
     else:
         print "Listening..."
     # Creamos servidor de eco y escuchamos
-    fichero_audio = sys.argv[3]
+    fich_audio = sys.argv[3]
     PORT = int(sys.argv[2])
     serv = SocketServer.UDPServer(("", PORT), EchoHandler)
     print "Lanzando servidor UDP de eco..."
