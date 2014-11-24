@@ -8,6 +8,8 @@ import os
 
 comandos = sys.argv
 
+if len(comandos) != 4:
+    sys.exit("Usage: python server.py IP port audio_file")
 
 SERVER = comandos[1]
 PORT = int(comandos[2])
@@ -53,8 +55,7 @@ if __name__ == "__main__":
     """
     Procedimiento principal
     """
-    if len(comandos) != 4:
-        print "Usage: python server.py IP port audio_file"
+
     serv = SocketServer.UDPServer((SERVER, PORT), EchoHandler)
     print "Listening..."
     serv.serve_forever()
