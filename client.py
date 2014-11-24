@@ -16,8 +16,10 @@ METHOD = sys.argv[1]
 
 # Dirección IP del servidor.
 SERVER = sys.argv[2].split("@")[1].split(":")[0]
-PORT = int(sys.argv[2].split(":")[1])
-
+try:
+    PORT = int(sys.argv[2].split(":")[1])
+except ValueError:
+    sys.exit("receiver@IP:SIPport; Port: Int required") 
 # Contenido que vamos a enviar
 LINE = sys.argv[2].split(":")[0]
 
