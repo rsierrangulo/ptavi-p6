@@ -27,7 +27,7 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
             print "El cliente nos manda " + line
             lista = line.split(" ")
             metodo = lista[0]
-            metodos = ['INVITE', 'ACK', 'BYE']
+            metodos = ['CANCEL', 'OPTIONS', 'REGISTER']
 
             if not line:
                 break
@@ -38,15 +38,15 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 respuesta += "SIP/2.0 200 OK\r\n\r\n"
                 self.wfile.write(respuesta)
             elif metodo == "ACK":
-                aEjecutar = './mp32rtp -i 127.0.0.1 -p 230321 <' + FICH_AUDIO
+                aEjecutar = './mp32rtp -i 127.0.0.1 -p 23032 <' + FICH_AUDIO
                 os.system('chmod 755 mp32rtp')                
                 os.system(aEjecutar)
             elif metodo == "BYE":
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
-            elif not metodo in metodos:
+            elif metodo in metodos:
                 self.wfile.write("SIP/2.0 405 Method Not Allowed\r\n\r\n")
             else:
-                self.wfile.write("SIP/2.0 400 Bad\r\n\r\n")
+                self.wfile.write("SIP/2.0 400 Bad Request\r\n\r\n")
 
 if __name__ == "__main__":
     if len(comandos) != 4:
