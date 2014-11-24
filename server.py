@@ -41,7 +41,11 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 self.wfile.write("SIP/2.0 400 Bad Request\r\n\r\n")
 
 if __name__ == "__main__":
-    LISTEN_PORT = int(sys.argv[2])
+    try:
+        LISTEN_PORT = int(sys.argv[2])
+        sys.argv[3]
+    except IndexError:
+        sys.exit("Usage: python server.py IP port audio_file")
     # Creamos servidor de eco y escuchamos
     serv = SocketServer.UDPServer(("", LISTEN_PORT), EchoHandler)
     print "Listening..."
