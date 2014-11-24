@@ -17,9 +17,6 @@ FICH_AUDIO = comandos[3]
 
 
 class EchoHandler(SocketServer.DatagramRequestHandler):
-    """
-    Echo server class
-    """
 
     def handle(self):
         while 1:
