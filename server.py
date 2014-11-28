@@ -28,23 +28,23 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
         CLIENT = str(self.client_address[0])
         while 1:
             line = self.rfile.read()
+            if not line:
+                break
             print "El cliente nos manda " + line
             lista = line.split(" ")
             metodo = lista[0]
             metodos = ['INVITE', 'ACK', 'BYE']
 
-            if not line:
-                break
-
             if metodo == "INVITE":
                 respuesta = "SIP/2.0 100 Trying\r\n\r\n"
-                respuesta += "SIP/2.0 180 Ring\r\n\r\n"
+                respuesta += "SIP/2.0 180 Ringing\r\n\r\n"
                 respuesta += "SIP/2.0 200 OK\r\n\r\n"
                 self.wfile.write(respuesta)
             elif metodo == "ACK":
                 aEjecutar = './mp32rtp -i' + CLIENT + '-p 23032 <' + FICH_AUDIO
                 os.system('chmod 755 mp32rtp')
                 os.system(aEjecutar)
+                print(" Hemos terminado la ejecución de fich de audio")
             elif metodo == "BYE":
                 self.wfile.write("SIP/2.0 200 OK\r\n\r\n")
             elif not metodo in metodos:
@@ -56,7 +56,6 @@ if __name__ == "__main__":
     """
     Procedimiento principal
     """
-
     serv = SocketServer.UDPServer((SERVER, PORT), EchoHandler)
     print "Listening..."
     serv.serve_forever()
